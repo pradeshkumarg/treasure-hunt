@@ -7,7 +7,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ComponentScan(basePackages = {"com.socure"})
+@ComponentScan(basePackages = { "com.socure" })
 @SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
 public class TreasureHuntApplication {
 	public static void main(String[] args) throws Exception {
