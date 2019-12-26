@@ -22,11 +22,6 @@ public class QuestionsController {
 	@Autowired
 	ResourceLoader resourceLoader;
 	
-	@GetMapping("/questions/check")
-	public String test() {
-		return "Working fine";
-	}
-
 	@PostMapping("/questions/check")
 	public String check(@RequestBody QuestionDTO questionDTO) throws IOException {
 		Resource resource = resourceLoader.getResource("classpath:answers.properties");
