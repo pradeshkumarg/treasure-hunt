@@ -1,7 +1,12 @@
 package com.socure.dto;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class QuestionDTO {
+	
 	private String id;
+	
 	private String answer;
 
 	public String getId() {

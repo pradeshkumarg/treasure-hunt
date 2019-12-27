@@ -1,42 +1,24 @@
-package com.socure.model;
+package com.socure.dto;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import org.springframework.stereotype.Component;
 
-@Entity
-@Table(name = "user")
-public class User {
+@Component
+public class UserResponseDTO {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@Column(unique = true)
 	private String name;
 
-	@Column
-	private String password;
-
-	@Column
 	private String phone;
 
-	@Column
 	private String email;
 
-	@Column
 	private String institution;
 
-	@Column(unique = true)
 	private String token;
 
-	@Column
 	private String level;
 
-	@Column
 	private String stats;
 
 	public Long getId() {
@@ -95,14 +77,6 @@ public class User {
 		this.stats = stats;
 	}
 
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
 	public String getInstitution() {
 		return institution;
 	}
@@ -110,5 +84,4 @@ public class User {
 	public void setInstitution(String institution) {
 		this.institution = institution;
 	}
-
 }
