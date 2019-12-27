@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.socure.constants.TreasureHuntConstants;
 import com.socure.dto.ResponseDTO;
-import com.socure.dto.UserResponseDTO;
+import com.socure.dto.UserInputDTO;
 import com.socure.model.User;
 import com.socure.repository.UserRepository;
 
@@ -24,37 +24,35 @@ public class UsersController {
 	@Autowired
 	UserRepository userRepository;
 
-	@GetMapping("/users/sample")
-	public User getUser() {
+	@PostMapping("/signup")
+	public ResponseEntity<?> saveUser(@RequestBody UserInputDTO userInputDTO) {
+		String password = userInputDTO.getPassword();
 		User user = new User();
-		return user;
-	}
-
-	@PostMapping("/users")
-	public ResponseEntity<?> saveUser(@RequestBody User user) {
+		BeanUtils.copyProperties(userInputDTO, user);
 		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-		String password = user.getPassword();
 		user.setPassword(passwordEncoder.encode(password));
 		user.setToken(UUID.randomUUID().toString());
+		user.setStats("Registered");
+		user.setLevel(0);
 		try {
-			User userRet = userRepository.save(user);
-			UserResponseDTO userResponseDTO = new UserResponseDTO();
-			BeanUtils.copyProperties(userRet, userResponseDTO);
-			return ResponseEntity.accepted().body(userResponseDTO);
-		}
-		catch(Exception e) {
+			userRepository.save(user);
+			ResponseDTO responseDTO = new ResponseDTO();
+			responseDTO.setStatus(200);
+			responseDTO.setMessage(TreasureHuntConstants.SIGN_UP_SUCCESSFULL);
+			return ResponseEntity.accepted().body(responseDTO);
+		} catch (Exception e) {
 			ResponseDTO responseDTO = new ResponseDTO();
 			responseDTO.setStatus(400);
 			responseDTO.setMessage(TreasureHuntConstants.ERROR_OCCURRED_IN_SIGNUP);
 			return ResponseEntity.badRequest().body(responseDTO);
 		}
 	}
-	
+
 	@GetMapping("/user/check_name_availability")
 	public ResponseDTO isNameAvailable(@RequestParam String name) {
 		User user = userRepository.findByName(name);
 		ResponseDTO responseDTO = new ResponseDTO();
-		if(null == user) {
+		if (null == user) {
 			responseDTO.setStatus(200);
 			responseDTO.setMessage("Username available");
 			return responseDTO;
@@ -63,5 +61,5 @@ public class UsersController {
 		responseDTO.setMessage("Username not available");
 		return responseDTO;
 	}
-	
+
 }

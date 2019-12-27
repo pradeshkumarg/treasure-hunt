@@ -34,10 +34,13 @@ public class User {
 	private String token;
 
 	@Column
-	private String level;
+	private int level;
 
 	@Column
 	private String stats;
+	
+	@Column 
+	private String currentQuestion;
 
 	public Long getId() {
 		return id;
@@ -79,11 +82,11 @@ public class User {
 		this.token = token;
 	}
 
-	public String getLevel() {
+	public int getLevel() {
 		return level;
 	}
 
-	public void setLevel(String level) {
+	public void setLevel(int level) {
 		this.level = level;
 	}
 
@@ -111,4 +114,11 @@ public class User {
 		this.institution = institution;
 	}
 
+	public String getCurrentQuestion() {
+		return currentQuestion;
+	}
+
+	public void setCurrentQuestion(String currentQuestion) {
+		this.currentQuestion = currentQuestion;
+	}
 }

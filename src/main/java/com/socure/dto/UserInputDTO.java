@@ -7,11 +7,17 @@ public class UserInputDTO {
 
 	private String name;
 
+	private String password;
+
 	private String phone;
 
 	private String email;
 
 	private String institution;
+
+	private String level;
+
+	private String stats;
 
 	public String getName() {
 		return name;
@@ -19,6 +25,14 @@ public class UserInputDTO {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	public String getPhone() {
@@ -43,5 +57,21 @@ public class UserInputDTO {
 
 	public void setInstitution(String institution) {
 		this.institution = institution;
+	}
+
+	public String getLevel() {
+		return level;
+	}
+
+	public void setLevel(String level) {
+		this.level = level;
+	}
+
+	public String getStats() {
+		return stats;
+	}
+
+	public void setStats(String stats) {
+		this.stats = stats;
 	}
 }
