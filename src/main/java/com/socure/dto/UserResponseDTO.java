@@ -17,7 +17,7 @@ public class UserResponseDTO {
 
 	private String token;
 
-	private String level;
+	private Integer level;
 
 	private String stats;
 
@@ -61,11 +61,11 @@ public class UserResponseDTO {
 		this.token = token;
 	}
 
-	public String getLevel() {
+	public Integer getLevel() {
 		return level;
 	}
 
-	public void setLevel(String level) {
+	public void setLevel(Integer level) {
 		this.level = level;
 	}
 

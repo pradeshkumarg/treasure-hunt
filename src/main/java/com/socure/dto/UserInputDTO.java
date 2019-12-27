@@ -15,10 +15,6 @@ public class UserInputDTO {
 
 	private String institution;
 
-	private String level;
-
-	private String stats;
-
 	public String getName() {
 		return name;
 	}
@@ -57,21 +53,5 @@ public class UserInputDTO {
 
 	public void setInstitution(String institution) {
 		this.institution = institution;
-	}
-
-	public String getLevel() {
-		return level;
-	}
-
-	public void setLevel(String level) {
-		this.level = level;
-	}
-
-	public String getStats() {
-		return stats;
-	}
-
-	public void setStats(String stats) {
-		this.stats = stats;
 	}
 }

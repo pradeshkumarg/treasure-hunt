@@ -34,13 +34,13 @@ public class User {
 	private String token;
 
 	@Column
-	private int level;
+	private Integer level = 0;
 
 	@Column
-	private String stats;
+	private String stats = "";
 	
-	@Column 
-	private String currentQuestion;
+	@Column
+	private String currentQuestion = "";
 
 	public Long getId() {
 		return id;

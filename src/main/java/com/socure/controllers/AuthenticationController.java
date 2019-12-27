@@ -15,30 +15,31 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.socure.constants.TreasureHuntConstants;
 import com.socure.dto.ResponseDTO;
+import com.socure.dto.UserLoginDTO;
 import com.socure.dto.UserResponseDTO;
 import com.socure.model.User;
 import com.socure.repository.UserRepository;
 
 @RestController
-public class LoginController {
+public class AuthenticationController {
 
 	@Autowired
 	UserRepository userRepository;
 
 	@PostMapping("/login")
-	public ResponseEntity<?> login(@RequestBody User user, HttpServletResponse res) {
-		User dbUser = userRepository.findByName(user.getName());
+	public ResponseEntity<?> login(@RequestBody UserLoginDTO userLoginDTO, HttpServletResponse res) {
+		User dbUser = userRepository.findByName(userLoginDTO.getName());
 		ResponseDTO responseDTO = new ResponseDTO();
 		if (null != dbUser) {
 			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-			if (passwordEncoder.matches(user.getPassword(), dbUser.getPassword())) {
-				final UserResponseDTO userDTO = new UserResponseDTO();
-				BeanUtils.copyProperties(dbUser, userDTO);
+			if (passwordEncoder.matches(userLoginDTO.getPassword(), dbUser.getPassword())) {
+				final UserResponseDTO userResponseDTO = new UserResponseDTO();
+				BeanUtils.copyProperties(dbUser, userResponseDTO);
 				Cookie cookie = new Cookie("token", dbUser.getToken());
 				cookie.setSecure(true);
 				cookie.setHttpOnly(true);
 				res.addCookie(cookie);
-				return ResponseEntity.accepted().body(userDTO);
+				return ResponseEntity.accepted().body(userResponseDTO);
 			}
 		}
 		responseDTO.setStatus(400);
@@ -51,12 +52,21 @@ public class LoginController {
 		User dbUser = userRepository.findByToken(token);
 		ResponseDTO responseDTO = new ResponseDTO();
 		if (null != dbUser) {
-			final UserResponseDTO userDTO = new UserResponseDTO();
-			BeanUtils.copyProperties(dbUser, userDTO);
-			return ResponseEntity.accepted().body(userDTO);
+			final UserResponseDTO userResponseDTO = new UserResponseDTO();
+			BeanUtils.copyProperties(dbUser, userResponseDTO);
+			return ResponseEntity.accepted().body(userResponseDTO);
 		}
 		responseDTO.setStatus(400);
 		responseDTO.setMessage(TreasureHuntConstants.FAILURE);
 		return ResponseEntity.badRequest().body(responseDTO);
+	}
+
+	@PostMapping("/logout")
+	public void logout(HttpServletResponse response) {
+		Cookie cookie = new Cookie("token", null);
+		cookie.setMaxAge(0);
+		cookie.setSecure(true);
+		cookie.setHttpOnly(true);
+		response.addCookie(cookie);
 	}
 }
