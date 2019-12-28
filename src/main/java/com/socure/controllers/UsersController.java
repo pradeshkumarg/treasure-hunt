@@ -1,5 +1,7 @@
 package com.socure.controllers;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletResponse;
@@ -8,6 +10,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +21,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.socure.constants.TreasureHuntConstants;
 import com.socure.dto.ResponseDTO;
 import com.socure.dto.UserInputDTO;
+import com.socure.dto.UserResponseDTO;
 import com.socure.model.User;
+import com.socure.repository.UserDAO;
 import com.socure.repository.UserRepository;
 
 @RestController
@@ -26,6 +31,9 @@ public class UsersController {
 
 	@Autowired
 	UserRepository userRepository;
+
+	@Autowired
+	UserDAO userDAO;
 
 	@PostMapping("/signup")
 	public ResponseEntity<?> saveUser(@RequestBody UserInputDTO userInputDTO) {
@@ -81,35 +89,55 @@ public class UsersController {
 		return responseDTO;
 	}
 
+	@CrossOrigin("http://localhost:9000")
 	@PostMapping("/user/redeem/{name}")
 	public ResponseDTO redeemUser(@PathVariable String name, HttpServletResponse httpServletResponse) {
 		ResponseDTO responseDTO = new ResponseDTO();
 		User user = userRepository.findByName(name);
 		if (null != user) {
 			String stats = user.getStats();
-			if(stats.contains("Redeemed")) {
+			if (stats.contains("Redeemed")) {
 				httpServletResponse.setStatus(403);
 				responseDTO.setStatus(403);
 				responseDTO.setMessage("Redeemed Already");
 				return responseDTO;
-			}
-			else if(stats.contains("6")) {
-				user.setStats(stats+ " | Redeemed");
+			} else if (stats.contains("6")) {
+				user.setStats(stats + " | Redeemed");
 				userRepository.save(user);
 				responseDTO.setStatus(200);
 				responseDTO.setMessage("Redeemed Successfully");
 				return responseDTO;
 			} else {
-				httpServletResponse.setStatus(403);
+				httpServletResponse.setStatus(401);
 				responseDTO.setStatus(401);
 				responseDTO.setMessage("Cannot Redeem token");
 				return responseDTO;
 			}
-		} 
+		}
 		httpServletResponse.setStatus(404);
 		responseDTO.setStatus(404);
 		responseDTO.setMessage("User not found");
 		return responseDTO;
+	}
+
+	@CrossOrigin("http://localhost:9000")
+	@GetMapping("/user/search/{text}")
+	public List<UserResponseDTO> getUsersList(@PathVariable String text) {
+		List<User> usersList = userDAO.getUserContainingString(text);
+		List<UserResponseDTO> userResponseDTOList = new ArrayList<>();
+		for (User user : usersList) {
+			UserResponseDTO userResponseDTO = new UserResponseDTO();
+			BeanUtils.copyProperties(user, userResponseDTO);
+			userResponseDTOList.add(userResponseDTO);
+		}
+		return userResponseDTOList;
+	}
+	
+	@CrossOrigin("http://localhost:9000")
+	@GetMapping("/users/count")
+	public ResponseEntity<?> getUsersCount() {
+		Long count = userRepository.getTotalUsersCount();
+		return ResponseEntity.accepted().body(count);
 	}
 
 }

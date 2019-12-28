@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.socure.constants.TreasureHuntConstants;
 import com.socure.dto.QuestionDTO;
 import com.socure.dto.ResponseDTO;
 import com.socure.model.User;
@@ -40,11 +41,11 @@ public class QuestionsController {
 				responseDTO.setStatus(200);
 				responseDTO.setMessage("You have already completed this level !");
 				return ResponseEntity.accepted().body(responseDTO);
-			} else if (user.getLevel() == level && level != 0) {
+			} else if (level != 0 && !user.getCurrentQuestion().equals("") && level == getLevelByCurrentQuestion(user.getCurrentQuestion())) {
 				QuestionDTO questionDTO = new QuestionDTO();
 				questionDTO.setId(user.getCurrentQuestion());
 				return ResponseEntity.accepted().body(questionDTO);
-			} else if (level - user.getLevel() == 1 && level<=6) {
+			} else if (level - user.getLevel() == 1 && level <= 6) {
 				ObjectMapper mapper = new ObjectMapper();
 				TypeReference<Map<String, List<QuestionDTO>>> typeReference = new TypeReference<Map<String, List<QuestionDTO>>>() {
 				};
@@ -77,5 +78,10 @@ public class QuestionsController {
 		int index = randomGenerator.nextInt(listOfQuestions.size());
 		QuestionDTO questionDTO = listOfQuestions.get(index);
 		return questionDTO;
+	}
+
+	public Integer getLevelByCurrentQuestion(String questionId) {
+		Integer level = TreasureHuntConstants.SOCURE.indexOf(questionId.charAt(0)) + 1;
+		return level;
 	}
 }

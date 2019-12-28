@@ -61,7 +61,7 @@ public class AnswersController {
 				}
 				dbUser.setLevel(level);
 				String stats = dbUser.getStats();
-				dbUser.setStats(stats.concat(" | " +level.toString()));
+				dbUser.setStats(stats.concat(" | Level " +level.toString()));
 				userRepository.save(dbUser);
 				ResponseDTO responseDTO = new ResponseDTO();
 				responseDTO.setStatus(200);
