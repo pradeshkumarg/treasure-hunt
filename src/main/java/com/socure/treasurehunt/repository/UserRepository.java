@@ -12,8 +12,12 @@ import com.socure.treasurehunt.model.User;
 public interface UserRepository extends CrudRepository<User, Long> {
 	
 	List<User> findAll();
+
+	@SuppressWarnings("unchecked")
 	User save(User user);
+	
 	User findByName(String name);
+	
 	User findByToken(String token);
 
 	@Query("SELECT COUNT(u) FROM User u")

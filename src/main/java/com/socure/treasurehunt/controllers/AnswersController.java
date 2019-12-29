@@ -1,7 +1,5 @@
 package com.socure.treasurehunt.controllers;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
@@ -51,7 +49,7 @@ public class AnswersController {
 			Properties properties = new Properties();
 			InputStream in = resource.getInputStream();
 			properties.load(in);
-			if (answer.equals(properties.get(questionId))) {
+			if (answer.equalsIgnoreCase(properties.get(questionId).toString())) {
 				if(dbUser.getStats().contains(level.toString())) {
 					ResponseDTO responseDTO = new ResponseDTO();
 					responseDTO.setStatus(200);
