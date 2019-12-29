@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -74,6 +75,7 @@ public class UsersController {
 		return responseDTO;
 	}
 
+	@CrossOrigin("http://localhost:9000")
 	@GetMapping("/user/stats/{name}")
 	public ResponseDTO getStats(@PathVariable String name, HttpServletResponse httpServletResponse) {
 		ResponseDTO responseDTO = new ResponseDTO();
@@ -132,12 +134,32 @@ public class UsersController {
 		}
 		return userResponseDTOList;
 	}
-	
+
 	@CrossOrigin("http://localhost:9000")
 	@GetMapping("/users/count")
 	public ResponseEntity<?> getUsersCount() {
 		Long count = userRepository.getTotalUsersCount();
 		return ResponseEntity.accepted().body(count);
+	}
+
+	@CrossOrigin("http://localhost:9000")
+	@PutMapping("/user/reset_password")
+	public ResponseEntity<?> resetPassword(@RequestParam String name) {
+		ResponseDTO responseDTO = new ResponseDTO();
+		User user = userRepository.findByName(name);
+		if (null != user) {
+			String newPassword = UUID.randomUUID().toString().substring(0, 6);
+			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+			user.setPassword(passwordEncoder.encode(newPassword));
+			userRepository.save(user);
+			responseDTO.setData(newPassword);
+			responseDTO.setMessage("Password Reset Successfully");
+			responseDTO.setStatus(200);
+			return ResponseEntity.status(200).body(responseDTO);
+		}
+		responseDTO.setStatus(404);
+		responseDTO.setMessage("User not found");
+		return ResponseEntity.status(404).body(responseDTO);
 	}
 
 }

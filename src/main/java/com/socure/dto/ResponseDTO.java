@@ -7,6 +7,8 @@ public class ResponseDTO {
 	
 	private int status;
 	
+	private String data;
+	
 	private String message;
 
 	public int getStatus() {
@@ -15,6 +17,14 @@ public class ResponseDTO {
 
 	public void setStatus(int status) {
 		this.status = status;
+	}
+
+	public String getData() {
+		return data;
+	}
+
+	public void setData(String data) {
+		this.data = data;
 	}
 
 	public String getMessage() {
