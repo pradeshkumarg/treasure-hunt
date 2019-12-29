@@ -1,4 +1,4 @@
-package com.socure.constants;
+package com.socure.treasurehunt.constants;
 
 public class TreasureHuntConstants {
 	

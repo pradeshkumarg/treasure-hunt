@@ -1,4 +1,4 @@
-package com.socure.repository;
+package com.socure.treasurehunt.repository;
 
 import java.util.List;
 
@@ -8,7 +8,7 @@ import javax.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.socure.model.User;
+import com.socure.treasurehunt.model.User;
 
 @Repository
 public class UserDAOImpl implements UserDAO {

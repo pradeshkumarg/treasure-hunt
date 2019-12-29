@@ -1,4 +1,4 @@
-package com.socure.controllers;
+package com.socure.treasurehunt.controllers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,13 +19,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.socure.constants.TreasureHuntConstants;
-import com.socure.dto.ResponseDTO;
-import com.socure.dto.UserInputDTO;
-import com.socure.dto.UserResponseDTO;
-import com.socure.model.User;
-import com.socure.repository.UserDAO;
-import com.socure.repository.UserRepository;
+import com.socure.treasurehunt.constants.TreasureHuntConstants;
+import com.socure.treasurehunt.dto.ResponseDTO;
+import com.socure.treasurehunt.dto.UserInputDTO;
+import com.socure.treasurehunt.dto.UserResponseDTO;
+import com.socure.treasurehunt.model.User;
+import com.socure.treasurehunt.repository.UserDAO;
+import com.socure.treasurehunt.repository.UserRepository;
 
 @RestController
 public class UsersController {
@@ -75,7 +75,7 @@ public class UsersController {
 		return responseDTO;
 	}
 
-	@CrossOrigin("http://localhost:9000")
+	@CrossOrigin({ "http://localhost:9000", "https://cryptic-headland-55422.herokuapp.com" })
 	@GetMapping("/user/stats/{name}")
 	public ResponseDTO getStats(@PathVariable String name, HttpServletResponse httpServletResponse) {
 		ResponseDTO responseDTO = new ResponseDTO();
@@ -91,7 +91,7 @@ public class UsersController {
 		return responseDTO;
 	}
 
-	@CrossOrigin("http://localhost:9000")
+	@CrossOrigin({ "http://localhost:9000", "https://cryptic-headland-55422.herokuapp.com" })
 	@PostMapping("/user/redeem/{name}")
 	public ResponseDTO redeemUser(@PathVariable String name, HttpServletResponse httpServletResponse) {
 		ResponseDTO responseDTO = new ResponseDTO();
@@ -122,7 +122,7 @@ public class UsersController {
 		return responseDTO;
 	}
 
-	@CrossOrigin("http://localhost:9000")
+	@CrossOrigin({ "http://localhost:9000", "https://cryptic-headland-55422.herokuapp.com" })
 	@GetMapping("/user/search/{text}")
 	public List<UserResponseDTO> getUsersList(@PathVariable String text) {
 		List<User> usersList = userDAO.getUserContainingString(text);
@@ -135,14 +135,14 @@ public class UsersController {
 		return userResponseDTOList;
 	}
 
-	@CrossOrigin("http://localhost:9000")
+	@CrossOrigin({ "http://localhost:9000", "https://cryptic-headland-55422.herokuapp.com" })
 	@GetMapping("/users/count")
 	public ResponseEntity<?> getUsersCount() {
 		Long count = userRepository.getTotalUsersCount();
 		return ResponseEntity.accepted().body(count);
 	}
 
-	@CrossOrigin("http://localhost:9000")
+	@CrossOrigin({ "http://localhost:9000", "https://cryptic-headland-55422.herokuapp.com" })
 	@PutMapping("/user/reset_password")
 	public ResponseEntity<?> resetPassword(@RequestParam String name) {
 		ResponseDTO responseDTO = new ResponseDTO();

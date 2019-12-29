@@ -1,4 +1,4 @@
-package com.socure.dto;
+package com.socure.treasurehunt.dto;
 
 import org.springframework.stereotype.Component;
 

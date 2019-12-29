@@ -1,10 +1,10 @@
-package com.socure.repository;
+package com.socure.treasurehunt.repository;
 
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import com.socure.model.User;
+import com.socure.treasurehunt.model.User;
 
 @Repository
 public interface UserDAO {

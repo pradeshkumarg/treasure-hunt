@@ -1,4 +1,4 @@
-package com.socure.controllers;
+package com.socure.treasurehunt.controllers;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.socure.constants.TreasureHuntConstants;
-import com.socure.dto.ResponseDTO;
-import com.socure.dto.UserLoginDTO;
-import com.socure.dto.UserResponseDTO;
-import com.socure.model.User;
-import com.socure.repository.UserRepository;
+import com.socure.treasurehunt.constants.TreasureHuntConstants;
+import com.socure.treasurehunt.dto.ResponseDTO;
+import com.socure.treasurehunt.dto.UserLoginDTO;
+import com.socure.treasurehunt.dto.UserResponseDTO;
+import com.socure.treasurehunt.model.User;
+import com.socure.treasurehunt.repository.UserRepository;
 
 @RestController
 public class AuthenticationController {

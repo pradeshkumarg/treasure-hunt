@@ -1,25 +1,46 @@
-package com.socure.dto;
+package com.socure.treasurehunt.model;
 
-import org.springframework.stereotype.Component;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
-@Component
-public class UserResponseDTO {
+@Entity
+@Table(name = "user")
+public class User {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
+	@Column(unique = true)
 	private String name;
 
+	@Column
+	private String password;
+
+	@Column
 	private String phone;
 
+	@Column
 	private String email;
 
+	@Column
 	private String institution;
 
+	@Column(unique = true)
 	private String token;
 
-	private Integer level;
+	@Column
+	private Integer level = 0;
 
-	private String stats;
+	@Column
+	private String stats = "";
+	
+	@Column
+	private String currentQuestion = "";
 
 	public Long getId() {
 		return id;
@@ -61,11 +82,11 @@ public class UserResponseDTO {
 		this.token = token;
 	}
 
-	public Integer getLevel() {
+	public int getLevel() {
 		return level;
 	}
 
-	public void setLevel(Integer level) {
+	public void setLevel(int level) {
 		this.level = level;
 	}
 
@@ -77,11 +98,27 @@ public class UserResponseDTO {
 		this.stats = stats;
 	}
 
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
 	public String getInstitution() {
 		return institution;
 	}
 
 	public void setInstitution(String institution) {
 		this.institution = institution;
+	}
+
+	public String getCurrentQuestion() {
+		return currentQuestion;
+	}
+
+	public void setCurrentQuestion(String currentQuestion) {
+		this.currentQuestion = currentQuestion;
 	}
 }

@@ -1,4 +1,4 @@
-package com.socure.repository;
+package com.socure.treasurehunt.repository;
 
 import java.util.List;
 
@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import com.socure.model.User;
+import com.socure.treasurehunt.model.User;
 
 @Repository
 public interface UserRepository extends CrudRepository<User, Long> {

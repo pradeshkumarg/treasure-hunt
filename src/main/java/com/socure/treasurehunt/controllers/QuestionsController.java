@@ -1,4 +1,4 @@
-package com.socure.controllers;
+package com.socure.treasurehunt.controllers;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -17,11 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.socure.constants.TreasureHuntConstants;
-import com.socure.dto.QuestionDTO;
-import com.socure.dto.ResponseDTO;
-import com.socure.model.User;
-import com.socure.repository.UserRepository;
+import com.socure.treasurehunt.constants.TreasureHuntConstants;
+import com.socure.treasurehunt.dto.QuestionDTO;
+import com.socure.treasurehunt.dto.ResponseDTO;
+import com.socure.treasurehunt.model.User;
+import com.socure.treasurehunt.repository.UserRepository;
 
 @RestController
 public class QuestionsController {
