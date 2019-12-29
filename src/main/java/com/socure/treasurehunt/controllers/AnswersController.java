@@ -48,9 +48,8 @@ public class AnswersController {
 		if (null != questionId && null != dbUser && dbUser.getCurrentQuestion().equals(questionId) && null != answer) {
 			Integer level = TreasureHuntConstants.SOCURE.indexOf(questionId.charAt(0)) + 1;
 			Resource resource = resourceLoader.getResource("classpath:answers.properties");
-			File file = resource.getFile();
 			Properties properties = new Properties();
-			InputStream in = new FileInputStream(file);
+			InputStream in = resource.getInputStream();
 			properties.load(in);
 			if (answer.equals(properties.get(questionId))) {
 				if(dbUser.getStats().contains(level.toString())) {

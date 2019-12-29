@@ -50,8 +50,7 @@ public class QuestionsController {
 				TypeReference<Map<String, List<QuestionDTO>>> typeReference = new TypeReference<Map<String, List<QuestionDTO>>>() {
 				};
 				Resource resource = resourceLoader.getResource("classpath:questions.json");
-				File file = resource.getFile();
-				InputStream inputStream = new FileInputStream(file);
+				InputStream inputStream = resource.getInputStream();
 				Map<String, List<QuestionDTO>> levelVsQuestionsMap = mapper.readValue(inputStream, typeReference);
 				List<QuestionDTO> listOfQuestions = levelVsQuestionsMap.get(level.toString());
 				QuestionDTO questionDTO = anyQuestion(listOfQuestions);
