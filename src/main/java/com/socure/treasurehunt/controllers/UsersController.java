@@ -141,6 +141,13 @@ public class UsersController {
 		Long count = userRepository.getTotalUsersCount();
 		return ResponseEntity.accepted().body(count);
 	}
+	
+	@CrossOrigin({ "http://localhost:9000", "https://cryptic-headland-55422.herokuapp.com" })
+	@GetMapping("/redemptions")
+	public ResponseEntity<?> getRedemptionCount() {
+		Long count = userRepository.getRedemptionCount();
+		return ResponseEntity.accepted().body(count);
+	}
 
 	@CrossOrigin({ "http://localhost:9000", "https://cryptic-headland-55422.herokuapp.com" })
 	@PutMapping("/user/reset_password")

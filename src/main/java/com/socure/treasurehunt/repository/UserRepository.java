@@ -18,4 +18,7 @@ public interface UserRepository extends CrudRepository<User, Long> {
 
 	@Query("SELECT COUNT(u) FROM User u")
     Long getTotalUsersCount();
+	
+	@Query("SELECT COUNT(u) FROM User u where u.stats like '%Redeemed%'")
+	Long getRedemptionCount();
 }
