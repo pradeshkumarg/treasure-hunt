@@ -54,7 +54,7 @@ public class AnswersController {
 					ResponseDTO responseDTO = new ResponseDTO();
 					responseDTO.setStatus(200);
 					responseDTO.setMessage("Level already cleared. " + levelVsClueMap.get(level.toString()));
-					return ResponseEntity.accepted().body(responseDTO);
+					return ResponseEntity.ok().body(responseDTO);
 				}
 				dbUser.setLevel(level);
 				String stats = dbUser.getStats();
@@ -63,19 +63,19 @@ public class AnswersController {
 				ResponseDTO responseDTO = new ResponseDTO();
 				responseDTO.setStatus(200);
 				responseDTO.setMessage(levelVsClueMap.get(level.toString()));
-				return ResponseEntity.accepted().body(responseDTO);
+				return ResponseEntity.ok().body(responseDTO);
 
 			} else {
 				ResponseDTO responseDTO = new ResponseDTO();
 				responseDTO.setStatus(200);
 				responseDTO.setMessage("Wrong Answer");
-				return ResponseEntity.accepted().body(responseDTO);
+				return ResponseEntity.ok().body(responseDTO);
 			}
 		} else {
 			ResponseDTO responseDTO = new ResponseDTO();
 			responseDTO.setStatus(401);
 			responseDTO.setMessage("Warning !! You are not allowed to perform the operation");
-			return ResponseEntity.accepted().body(responseDTO);
+			return ResponseEntity.badRequest().body(responseDTO);
 		}
 	}
 

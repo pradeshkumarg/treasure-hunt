@@ -39,7 +39,7 @@ public class AuthenticationController {
 				cookie.setSecure(true);
 				cookie.setHttpOnly(true);
 				res.addCookie(cookie);
-				return ResponseEntity.accepted().body(userResponseDTO);
+				return ResponseEntity.ok().body(userResponseDTO);
 			}
 		}
 		responseDTO.setStatus(400);
@@ -54,7 +54,7 @@ public class AuthenticationController {
 		if (null != dbUser) {
 			final UserResponseDTO userResponseDTO = new UserResponseDTO();
 			BeanUtils.copyProperties(dbUser, userResponseDTO);
-			return ResponseEntity.accepted().body(userResponseDTO);
+			return ResponseEntity.ok().body(userResponseDTO);
 		}
 		responseDTO.setStatus(400);
 		responseDTO.setMessage(TreasureHuntConstants.FAILURE);

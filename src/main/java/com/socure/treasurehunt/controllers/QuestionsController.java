@@ -38,11 +38,11 @@ public class QuestionsController {
 				ResponseDTO responseDTO = new ResponseDTO();
 				responseDTO.setStatus(200);
 				responseDTO.setMessage("You have already completed this level !");
-				return ResponseEntity.accepted().body(responseDTO);
+				return ResponseEntity.ok().body(responseDTO);
 			} else if (level != 0 && !user.getCurrentQuestion().equals("") && level == getLevelByCurrentQuestion(user.getCurrentQuestion())) {
 				QuestionDTO questionDTO = new QuestionDTO();
 				questionDTO.setId(user.getCurrentQuestion());
-				return ResponseEntity.accepted().body(questionDTO);
+				return ResponseEntity.ok().body(questionDTO);
 			} else if (level - user.getLevel() == 1 && level <= 6) {
 				ObjectMapper mapper = new ObjectMapper();
 				TypeReference<Map<String, List<QuestionDTO>>> typeReference = new TypeReference<Map<String, List<QuestionDTO>>>() {
@@ -54,18 +54,18 @@ public class QuestionsController {
 				QuestionDTO questionDTO = anyQuestion(listOfQuestions);
 				user.setCurrentQuestion(questionDTO.getId());
 				userRepository.save(user);
-				return ResponseEntity.accepted().body(questionDTO);
+				return ResponseEntity.ok().body(questionDTO);
 			} else {
 				ResponseDTO responseDTO = new ResponseDTO();
 				responseDTO.setStatus(401);
 				responseDTO.setMessage("Warning! You cannot bypass any levels.");
-				return ResponseEntity.accepted().body(responseDTO);
+				return ResponseEntity.badRequest().body(responseDTO);
 			}
 		} else {
 			ResponseDTO responseDTO = new ResponseDTO();
 			responseDTO.setStatus(404);
 			responseDTO.setMessage("User not found.");
-			return ResponseEntity.accepted().body(responseDTO);
+			return ResponseEntity.ok().body(responseDTO);
 		}
 
 	}

@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.transaction.Transactional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,9 +50,9 @@ public class UsersController {
 		try {
 			userRepository.save(user);
 			ResponseDTO responseDTO = new ResponseDTO();
-			responseDTO.setStatus(200);
+			responseDTO.setStatus(201);
 			responseDTO.setMessage(TreasureHuntConstants.SIGN_UP_SUCCESSFULL);
-			return ResponseEntity.accepted().body(responseDTO);
+			return ResponseEntity.created(null).body(responseDTO);
 		} catch (Exception e) {
 			ResponseDTO responseDTO = new ResponseDTO();
 			responseDTO.setStatus(400);
@@ -140,14 +139,14 @@ public class UsersController {
 	@GetMapping("/users/count")
 	public ResponseEntity<?> getUsersCount() {
 		Long count = userRepository.getTotalUsersCount();
-		return ResponseEntity.accepted().body(count);
+		return ResponseEntity.ok().body(count);
 	}
 	
 	@CrossOrigin({ "http://localhost:9000", "https://cryptic-headland-55422.herokuapp.com" })
 	@GetMapping("/redemptions")
 	public ResponseEntity<?> getRedemptionCount() {
 		Long count = userRepository.getRedemptionCount();
-		return ResponseEntity.accepted().body(count);
+		return ResponseEntity.ok().body(count);
 	}
 
 	@CrossOrigin({ "http://localhost:9000", "https://cryptic-headland-55422.herokuapp.com" })
