@@ -62,7 +62,7 @@ public class UsersController {
 	}
 
 	@GetMapping("/user/check_name_availability")
-	public ResponseDTO isNameAvailable(@RequestParam String loginName) {
+	public ResponseDTO isNameAvailable(@RequestParam String loginName, HttpServletResponse httpServletResponse) {
 		User user = userRepository.findByLoginName(loginName);
 		ResponseDTO responseDTO = new ResponseDTO();
 		if (null == user) {
@@ -70,6 +70,7 @@ public class UsersController {
 			responseDTO.setMessage("Username available");
 			return responseDTO;
 		}
+		httpServletResponse.setStatus(406);
 		responseDTO.setStatus(406);
 		responseDTO.setMessage("Username not available");
 		return responseDTO;
