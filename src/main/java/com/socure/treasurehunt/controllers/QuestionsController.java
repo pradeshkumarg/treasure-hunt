@@ -38,7 +38,7 @@ public class QuestionsController {
 				ResponseDTO responseDTO = new ResponseDTO();
 				responseDTO.setStatus(200);
 				responseDTO.setMessage("You have already completed this level !");
-				return ResponseEntity.ok().body(responseDTO);
+				return ResponseEntity.badRequest().body(responseDTO);
 			} else if (level != 0 && !user.getCurrentQuestion().equals("") && level == getLevelByCurrentQuestion(user.getCurrentQuestion())) {
 				QuestionDTO questionDTO = new QuestionDTO();
 				questionDTO.setId(user.getCurrentQuestion());
@@ -65,7 +65,7 @@ public class QuestionsController {
 			ResponseDTO responseDTO = new ResponseDTO();
 			responseDTO.setStatus(404);
 			responseDTO.setMessage("User not found.");
-			return ResponseEntity.ok().body(responseDTO);
+			return ResponseEntity.badRequest().body(responseDTO);
 		}
 
 	}
