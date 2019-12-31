@@ -29,7 +29,7 @@ public class User {
 	@Column
 	private String phone;
 
-	@Column
+	@Column(unique = true)
 	@NotNull
 	private String email;
 
