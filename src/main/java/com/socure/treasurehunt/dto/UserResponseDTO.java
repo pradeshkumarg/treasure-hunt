@@ -22,6 +22,8 @@ public class UserResponseDTO {
 	private Integer level;
 
 	private String stats;
+	
+	private String currentQuestion;
 
 	public Long getId() {
 		return id;
@@ -94,4 +96,14 @@ public class UserResponseDTO {
 	public void setInstitution(String institution) {
 		this.institution = institution;
 	}
+
+	public String getCurrentQuestion() {
+		return currentQuestion;
+	}
+
+	public void setCurrentQuestion(String currentQuestion) {
+		this.currentQuestion = currentQuestion;
+	}
+	
+	
 }
