@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.transaction.Transactional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,15 +63,15 @@ public class UsersController {
 	}
 
 	@GetMapping("/user/check_name_availability")
-	public ResponseDTO isNameAvailable(@RequestParam String name) {
-		User user = userRepository.findByName(name);
+	public ResponseDTO isNameAvailable(@RequestParam String loginName) {
+		User user = userRepository.findByLoginName(loginName);
 		ResponseDTO responseDTO = new ResponseDTO();
 		if (null == user) {
 			responseDTO.setStatus(200);
 			responseDTO.setMessage("Username available");
 			return responseDTO;
 		}
-		responseDTO.setStatus(200);
+		responseDTO.setStatus(406);
 		responseDTO.setMessage("Username not available");
 		return responseDTO;
 	}
@@ -79,7 +80,7 @@ public class UsersController {
 	@GetMapping("/user/stats/{name}")
 	public ResponseDTO getStats(@PathVariable String name, HttpServletResponse httpServletResponse) {
 		ResponseDTO responseDTO = new ResponseDTO();
-		User user = userRepository.findByName(name);
+		User user = userRepository.findByLoginName(name);
 		if (null != user) {
 			responseDTO.setStatus(200);
 			responseDTO.setMessage(user.getStats());
@@ -95,7 +96,7 @@ public class UsersController {
 	@PostMapping("/user/redeem/{name}")
 	public ResponseDTO redeemUser(@PathVariable String name, HttpServletResponse httpServletResponse) {
 		ResponseDTO responseDTO = new ResponseDTO();
-		User user = userRepository.findByName(name);
+		User user = userRepository.findByLoginName(name);
 		if (null != user) {
 			String stats = user.getStats();
 			if (stats.contains("Redeemed")) {
@@ -153,7 +154,7 @@ public class UsersController {
 	@PutMapping("/user/reset_password")
 	public ResponseEntity<?> resetPassword(@RequestParam String name) {
 		ResponseDTO responseDTO = new ResponseDTO();
-		User user = userRepository.findByName(name);
+		User user = userRepository.findByLoginName(name);
 		if (null != user) {
 			String newPassword = UUID.randomUUID().toString().substring(0, 6);
 			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();

@@ -28,7 +28,7 @@ public class AuthenticationController {
 
 	@PostMapping("/login")
 	public ResponseEntity<?> login(@RequestBody UserLoginDTO userLoginDTO, HttpServletResponse res) {
-		User dbUser = userRepository.findByName(userLoginDTO.getName());
+		User dbUser = userRepository.findByLoginName(userLoginDTO.getLoginName());
 		ResponseDTO responseDTO = new ResponseDTO();
 		if (null != dbUser) {
 			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();

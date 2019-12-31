@@ -16,7 +16,7 @@ public interface UserRepository extends CrudRepository<User, Long> {
 	@SuppressWarnings("unchecked")
 	User save(User user);
 	
-	User findByName(String name);
+	User findByLoginName(String name);
 	
 	User findByToken(String token);
 
@@ -26,3 +26,4 @@ public interface UserRepository extends CrudRepository<User, Long> {
 	@Query("SELECT COUNT(u) FROM User u where u.stats like '%Redeemed%'")
 	Long getRedemptionCount();
 }
+	

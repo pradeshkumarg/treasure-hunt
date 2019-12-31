@@ -18,7 +18,7 @@ public class UserDAOImpl implements UserDAO {
 
 	@Override
 	public List<User> getUserContainingString(String text) {
-		TypedQuery<User> query = entityManager.createQuery("select u from User u where lower(concat(u.name,u.email,u.institution,u.phone,u.stats)) like concat('%',:text,'%')", User.class);
+		TypedQuery<User> query = entityManager.createQuery("select u from User u where lower(concat(u.name,u.loginName,u.email,u.institution,u.phone,u.stats)) like concat('%',:text,'%')", User.class);
 		query.setParameter("text", text.toLowerCase());
 		List<User> usersList = query.getResultList();
 		return usersList;

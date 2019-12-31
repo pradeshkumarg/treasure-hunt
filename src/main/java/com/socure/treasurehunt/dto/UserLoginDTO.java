@@ -5,16 +5,16 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserLoginDTO {
 
-	private String name;
+	private String loginName;
 
 	private String password;
 
-	public String getName() {
-		return name;
+	public String getLoginName() {
+		return loginName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setLoginName(String loginName) {
+		this.loginName = loginName;
 	}
 
 	public String getPassword() {

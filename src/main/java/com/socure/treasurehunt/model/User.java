@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "user")
@@ -15,8 +16,12 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@Column(unique = true)
+	@NotNull
 	private String name;
+
+	@Column(unique = true)
+	@NotNull
+	private String loginName;
 
 	@Column
 	private String password;
@@ -25,6 +30,7 @@ public class User {
 	private String phone;
 
 	@Column
+	@NotNull
 	private String email;
 
 	@Column
@@ -38,7 +44,7 @@ public class User {
 
 	@Column
 	private String stats = "";
-	
+
 	@Column
 	private String currentQuestion = "";
 
@@ -56,6 +62,14 @@ public class User {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getLoginName() {
+		return loginName;
+	}
+
+	public void setLoginName(String loginName) {
+		this.loginName = loginName;
 	}
 
 	public String getPhone() {
@@ -121,4 +135,9 @@ public class User {
 	public void setCurrentQuestion(String currentQuestion) {
 		this.currentQuestion = currentQuestion;
 	}
+
+	public void setLevel(Integer level) {
+		this.level = level;
+	}
+
 }
