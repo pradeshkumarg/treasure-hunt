@@ -1,10 +1,14 @@
 package com.socure.treasurehunt.model;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -47,6 +51,12 @@ public class User {
 
 	@Column
 	private String currentQuestion = "";
+	
+	@Column
+	private Boolean isBanned = false;
+	
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Metric> metrics;
 
 	public Long getId() {
 		return id;
@@ -96,11 +106,11 @@ public class User {
 		this.token = token;
 	}
 
-	public int getLevel() {
+	public Integer getLevel() {
 		return level;
 	}
-
-	public void setLevel(int level) {
+	
+	public void setLevel(Integer level) {
 		this.level = level;
 	}
 
@@ -136,8 +146,19 @@ public class User {
 		this.currentQuestion = currentQuestion;
 	}
 
-	public void setLevel(Integer level) {
-		this.level = level;
+	public Boolean getIsBanned() {
+		return isBanned;
 	}
 
+	public void setIsBanned(Boolean isBanned) {
+		this.isBanned = isBanned;
+	}
+
+	public List<Metric> getMetrics() {
+		return metrics;
+	}
+
+	public void setMetrics(List<Metric> metrics) {
+		this.metrics = metrics;
+	}
 }

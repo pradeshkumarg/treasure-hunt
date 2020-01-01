@@ -18,7 +18,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.socure.treasurehunt.constants.TreasureHuntConstants;
 import com.socure.treasurehunt.dto.QuestionDTO;
 import com.socure.treasurehunt.dto.ResponseDTO;
+import com.socure.treasurehunt.model.Metric;
 import com.socure.treasurehunt.model.User;
+import com.socure.treasurehunt.repository.MetricsRepository;
 import com.socure.treasurehunt.repository.UserRepository;
 
 @RestController
@@ -29,14 +31,27 @@ public class QuestionsController {
 
 	@Autowired
 	UserRepository userRepository;
+	
+	@Autowired
+	MetricsRepository metricRepository;
 
 	@GetMapping("/question")
 	public ResponseEntity<?> getQuestion(@RequestParam String token, @RequestParam Integer level) throws Exception {
 		User user = userRepository.findByToken(token);
-		if (null != user) {
+		Metric metric = new Metric();
+		ResponseDTO responseDTO = new ResponseDTO();
+		if(null != user && user.getIsBanned()) {
+			responseDTO.setStatus(401);
+			responseDTO.setMessage(TreasureHuntConstants.BANNED);
+			return ResponseEntity.status(401).body(responseDTO);
+		}
+		else if (null != user) {
+			metric.setUser(user);
 			if (user.getLevel() > level || user.getStats().contains(level.toString())) {
-				ResponseDTO responseDTO = new ResponseDTO();
-				responseDTO.setStatus(200);
+				metric.setStatus("Scanned a completed QR code in Level "+ level);
+				metric.setSeverity("low");
+				metricRepository.save(metric);
+				responseDTO.setStatus(400);
 				responseDTO.setMessage("You have already completed this level !");
 				return ResponseEntity.badRequest().body(responseDTO);
 			} else if (level != 0 && !user.getCurrentQuestion().equals("") && level == getLevelByCurrentQuestion(user.getCurrentQuestion())) {
@@ -56,13 +71,19 @@ public class QuestionsController {
 				userRepository.save(user);
 				return ResponseEntity.ok().body(questionDTO);
 			} else {
-				ResponseDTO responseDTO = new ResponseDTO();
+				Integer actualLevel = user.getLevel();
+				actualLevel = actualLevel < 6 ? actualLevel+1 : actualLevel;
+				metric.setStatus("Tried to bypass levels. Level Scanned : "+ level + ", Actual Level : "+ actualLevel);
+				metric.setSeverity("high");
+				metricRepository.save(metric);
 				responseDTO.setStatus(401);
 				responseDTO.setMessage("Warning! You cannot bypass any levels.");
 				return ResponseEntity.badRequest().body(responseDTO);
 			}
 		} else {
-			ResponseDTO responseDTO = new ResponseDTO();
+			metric.setSeverity("high");
+			metric.setStatus("Tried to enter a random token ! Token : "+ token + ", Level : "+ level);
+			metricRepository.save(metric);
 			responseDTO.setStatus(404);
 			responseDTO.setMessage("User not found.");
 			return ResponseEntity.badRequest().body(responseDTO);

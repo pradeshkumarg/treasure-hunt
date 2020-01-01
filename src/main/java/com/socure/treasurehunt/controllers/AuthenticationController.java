@@ -30,7 +30,12 @@ public class AuthenticationController {
 	public ResponseEntity<?> login(@RequestBody UserLoginDTO userLoginDTO, HttpServletResponse res) {
 		User dbUser = userRepository.findByLoginName(userLoginDTO.getLoginName());
 		ResponseDTO responseDTO = new ResponseDTO();
-		if (null != dbUser) {
+		if(null != dbUser && dbUser.getIsBanned()) {
+			responseDTO.setStatus(401);
+			responseDTO.setMessage(TreasureHuntConstants.BANNED);
+			return ResponseEntity.status(401).body(responseDTO);
+		}
+		else if (null != dbUser) {
 			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 			if (passwordEncoder.matches(userLoginDTO.getPassword(), dbUser.getPassword())) {
 				final UserResponseDTO userResponseDTO = new UserResponseDTO();
@@ -42,23 +47,28 @@ public class AuthenticationController {
 				return ResponseEntity.ok().body(userResponseDTO);
 			}
 		}
-		responseDTO.setStatus(400);
+		responseDTO.setStatus(401);
 		responseDTO.setMessage(TreasureHuntConstants.FAILURE);
-		return ResponseEntity.badRequest().body(responseDTO);
+		return ResponseEntity.status(401).body(responseDTO);
 	}
 
 	@GetMapping("/sign_in_with_token")
 	public ResponseEntity<?> signInWithToken(@RequestParam String token) {
 		User dbUser = userRepository.findByToken(token);
 		ResponseDTO responseDTO = new ResponseDTO();
-		if (null != dbUser) {
+		if(null != dbUser && dbUser.getIsBanned()) {
+			responseDTO.setStatus(401);
+			responseDTO.setMessage(TreasureHuntConstants.BANNED);
+			return ResponseEntity.status(401).body(responseDTO);
+		}
+		else if (null != dbUser) {
 			final UserResponseDTO userResponseDTO = new UserResponseDTO();
 			BeanUtils.copyProperties(dbUser, userResponseDTO);
 			return ResponseEntity.ok().body(userResponseDTO);
 		}
-		responseDTO.setStatus(400);
+		responseDTO.setStatus(401);
 		responseDTO.setMessage(TreasureHuntConstants.FAILURE);
-		return ResponseEntity.badRequest().body(responseDTO);
+		return ResponseEntity.status(401).body(responseDTO);
 	}
 
 	@PostMapping("/logout")

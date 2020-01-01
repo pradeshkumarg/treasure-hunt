@@ -23,6 +23,7 @@ import com.socure.treasurehunt.constants.TreasureHuntConstants;
 import com.socure.treasurehunt.dto.ResponseDTO;
 import com.socure.treasurehunt.dto.UserInputDTO;
 import com.socure.treasurehunt.dto.UserResponseDTO;
+import com.socure.treasurehunt.model.Metric;
 import com.socure.treasurehunt.model.User;
 import com.socure.treasurehunt.repository.UserDAO;
 import com.socure.treasurehunt.repository.UserRepository;
@@ -169,5 +170,50 @@ public class UsersController {
 		responseDTO.setMessage("User not found");
 		return ResponseEntity.status(404).body(responseDTO);
 	}
-
+	
+	@CrossOrigin({ "http://localhost:9000", "https://cryptic-headland-55422.herokuapp.com" })
+	@PutMapping("/user/ban")
+	public ResponseEntity<?> banUser(@RequestParam String name) {
+		ResponseDTO responseDTO = new ResponseDTO();
+		User user = userRepository.findByLoginName(name);
+		Metric metric = new Metric();
+		if(null != user) {
+			metric.setUser(user);
+			metric.setSeverity("High");
+			metric.setStatus("User Banned !");
+			user.setIsBanned(true);
+			userRepository.save(user);
+			responseDTO.setMessage("User Banned !");
+			responseDTO.setStatus(200);
+			return ResponseEntity.status(200).body(responseDTO);
+		}
+		responseDTO.setStatus(404);
+		responseDTO.setMessage("User not found");
+		return ResponseEntity.status(404).body(responseDTO);
+	}
+	
+	@CrossOrigin({ "http://localhost:9000", "https://cryptic-headland-55422.herokuapp.com" })
+	@PutMapping("/user/unban")
+	public ResponseEntity<?> unBanUser(@RequestParam String name) {
+		ResponseDTO responseDTO = new ResponseDTO();
+		User user = userRepository.findByLoginName(name);
+		Metric metric = new Metric();
+		if(null != user && user.getIsBanned()) {
+			metric.setUser(user);
+			metric.setSeverity("High");
+			metric.setStatus("User Unbanned");
+			user.setIsBanned(false);
+			userRepository.save(user);
+			responseDTO.setMessage("User Unbanned !");
+			responseDTO.setStatus(200);
+			return ResponseEntity.status(200).body(responseDTO);
+		} else if(null != user) {
+			responseDTO.setStatus(200);
+			responseDTO.setMessage("This user is active");
+			return ResponseEntity.status(200).body(responseDTO);
+		}
+		responseDTO.setStatus(404);
+		responseDTO.setMessage("User not found");
+		return ResponseEntity.status(404).body(responseDTO);
+	}
 }
