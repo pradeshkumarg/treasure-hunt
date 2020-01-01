@@ -13,5 +13,5 @@ public interface MetricsRepository extends CrudRepository<Metric, Long> {
 	
 	List<Metric> findAll();
 	
-	List<Metric> findByStatus(String status);
+	List<Metric> findBySeverity(String severity);
 }

@@ -1,65 +1,31 @@
-package com.socure.treasurehunt.model;
+package com.socure.treasurehunt.dto;
 
-import java.util.List;
+import org.springframework.stereotype.Component;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
+@Component
+public class UserMetricDTO {
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-@Entity
-@Table(name = "user")
-public class User {
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@NotNull
 	private String name;
 
-	@Column(unique = true)
-	@NotNull
 	private String loginName;
 
-	@Column
-	private String password;
-
-	@Column
 	private String phone;
 
-	@Column(unique = true)
-	@NotNull
 	private String email;
 
-	@Column
 	private String institution;
 
-	@Column(unique = true)
 	private String token;
 
-	@Column
-	private Integer level = 0;
+	private Integer level;
 
-	@Column
-	private String stats = "";
-
-	@Column
-	private String currentQuestion = "";
+	private String stats;
 	
-	@Column
-	private Boolean isBanned = false;
+	private String currentQuestion;
 	
-	@JsonIgnore
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Metric> metrics;
+	private String isBanned;
 
 	public Long getId() {
 		return id;
@@ -112,7 +78,7 @@ public class User {
 	public Integer getLevel() {
 		return level;
 	}
-	
+
 	public void setLevel(Integer level) {
 		this.level = level;
 	}
@@ -123,14 +89,6 @@ public class User {
 
 	public void setStats(String stats) {
 		this.stats = stats;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
 	}
 
 	public String getInstitution() {
@@ -149,19 +107,11 @@ public class User {
 		this.currentQuestion = currentQuestion;
 	}
 
-	public Boolean getIsBanned() {
+	public String getIsBanned() {
 		return isBanned;
 	}
 
-	public void setIsBanned(Boolean isBanned) {
+	public void setIsBanned(String isBanned) {
 		this.isBanned = isBanned;
-	}
-
-	public List<Metric> getMetrics() {
-		return metrics;
-	}
-
-	public void setMetrics(List<Metric> metrics) {
-		this.metrics = metrics;
 	}
 }
