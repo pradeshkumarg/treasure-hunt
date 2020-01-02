@@ -25,7 +25,7 @@ public class UserMetricDTO {
 	
 	private String currentQuestion;
 	
-	private String isBanned;
+	private Boolean isBanned;
 
 	public Long getId() {
 		return id;
@@ -107,11 +107,11 @@ public class UserMetricDTO {
 		this.currentQuestion = currentQuestion;
 	}
 
-	public String getIsBanned() {
+	public Boolean getIsBanned() {
 		return isBanned;
 	}
 
-	public void setIsBanned(String isBanned) {
+	public void setIsBanned(Boolean isBanned) {
 		this.isBanned = isBanned;
 	}
 }

@@ -40,7 +40,7 @@ public class AnswersController {
 
 	@Autowired
 	UserRepository userRepository;
-	
+
 	@Autowired
 	MetricsRepository metricRepository;
 
@@ -49,7 +49,7 @@ public class AnswersController {
 			@RequestParam String answer) throws Exception {
 		User dbUser = userRepository.findByToken(token);
 		ResponseDTO responseDTO = new ResponseDTO();
-		if(null != dbUser && dbUser.getIsBanned()) {
+		if (null != dbUser && dbUser.getIsBanned()) {
 			responseDTO.setStatus(401);
 			responseDTO.setMessage(TreasureHuntConstants.BANNED);
 			return ResponseEntity.status(401).body(responseDTO);
@@ -63,8 +63,8 @@ public class AnswersController {
 			InputStream in = resource.getInputStream();
 			properties.load(in);
 			if (answer.equalsIgnoreCase(properties.get(questionId).toString())) {
-				if(dbUser.getStats().contains(level.toString())) {
-					metric.setStatus("Answered the same Question again in Level "+ level);
+				if (dbUser.getStats().contains(level.toString())) {
+					metric.setStatus("Answered the same Question again in Level " + level);
 					metric.setSeverity("low");
 					metricRepository.save(metric);
 					responseDTO.setStatus(200);
@@ -73,7 +73,7 @@ public class AnswersController {
 				}
 				dbUser.setLevel(level);
 				String stats = dbUser.getStats();
-				dbUser.setStats(stats.concat(" | Level " +level.toString()));
+				dbUser.setStats(stats.concat(" | Level " + level.toString()));
 				userRepository.save(dbUser);
 				responseDTO.setStatus(200);
 				responseDTO.setMessage(levelVsClueMap.get(level.toString()));
@@ -84,20 +84,26 @@ public class AnswersController {
 				responseDTO.setMessage("Wrong Answer");
 				return ResponseEntity.ok().body(responseDTO);
 			}
-		} else {
+		} 
+		else if(null == dbUser) {
+			metric.setStatus("Tried to enter a random token. Token :"+token+" , Level : "+level);
+			metric.setSeverity("high");
+			metricRepository.save(metric);
+		}
+		else {
 			Integer actualLevel = dbUser.getLevel();
-			actualLevel = actualLevel < 6 ? actualLevel+1 : actualLevel;
-			if(level != 0) {
-				metric.setStatus("Tried to answer Level "+ level + ". Actual Level is "+ actualLevel);
+			actualLevel = actualLevel < 6 ? actualLevel + 1 : actualLevel;
+			if (level != 0) {
+				metric.setStatus("Tried to answer Level " + level + ". Actual Level is " + actualLevel);
 			} else {
 				metric.setStatus("Tried to enter a random value to question id");
 			}
 			metric.setSeverity("high");
 			metricRepository.save(metric);
-			responseDTO.setStatus(401);
-			responseDTO.setMessage("Warning !! You are not allowed to perform the operation");
-			return ResponseEntity.badRequest().body(responseDTO);
 		}
+		responseDTO.setStatus(401);
+		responseDTO.setMessage("Warning !! You are not allowed to perform the operation");
+		return ResponseEntity.badRequest().body(responseDTO);
 	}
 
 }

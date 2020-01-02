@@ -6,10 +6,12 @@ import java.util.List;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.socure.treasurehunt.dto.IncidentDTO;
 import com.socure.treasurehunt.dto.MetricDTO;
 import com.socure.treasurehunt.dto.UserMetricDTO;
 import com.socure.treasurehunt.model.Metric;
@@ -22,6 +24,7 @@ public class MetricsController {
 	@Autowired
 	MetricsRepository metricRepository;
 
+	@CrossOrigin({ "http://localhost:9000", "https://cryptic-headland-55422.herokuapp.com" })
 	@GetMapping("/metrics")
 	public ResponseEntity<?> getAllMetrics() {
 		List<Metric> metricList = metricRepository.findAll();
@@ -40,6 +43,7 @@ public class MetricsController {
 		return ResponseEntity.ok(metricDTOList);
 	}
 	
+	@CrossOrigin({ "http://localhost:9000", "https://cryptic-headland-55422.herokuapp.com" })
 	@GetMapping("/metrics/{severity}")
 	public ResponseEntity<?> getMetricBySeverity(@PathVariable String severity) {
 		List<Metric> metricList = metricRepository.findBySeverity(severity);
@@ -58,5 +62,13 @@ public class MetricsController {
 		return ResponseEntity.ok(metricDTOList);
 	}
 	
+	@CrossOrigin({ "http://localhost:9000", "https://cryptic-headland-55422.herokuapp.com" })
+	@GetMapping("/incidents")
+	public IncidentDTO getIncidents() {
+		IncidentDTO incidentDTO = new IncidentDTO();
+		incidentDTO.setLow(metricRepository.getLowCount());
+		incidentDTO.setHigh(metricRepository.getHighCount());
+		return incidentDTO;
+	}
 
 }

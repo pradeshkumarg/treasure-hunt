@@ -24,7 +24,9 @@ public class TreasureHuntApplication {
 		return new WebMvcConfigurerAdapter() {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/**").allowedOrigins("https://treasurehunt-2020.socure.net" , "https://api-treasurehunt-2020.socure.net","http://localhost:3000");
+				registry.addMapping("/**")
+				.allowedMethods("GET", "POST", "PUT", "DELETE", "HEAD")
+				.allowedOrigins("https://treasurehunt-2020.socure.net" , "https://api-treasurehunt-2020.socure.net","http://localhost:3000", "http://localhost:9000");
 			}
 		};
 	}

@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.socure.treasurehunt.constants.TreasureHuntConstants;
 import com.socure.treasurehunt.dto.ResponseDTO;
 import com.socure.treasurehunt.dto.UserInputDTO;
-import com.socure.treasurehunt.dto.UserResponseDTO;
+import com.socure.treasurehunt.dto.UserMetricDTO;
 import com.socure.treasurehunt.model.Metric;
 import com.socure.treasurehunt.model.User;
 import com.socure.treasurehunt.repository.UserDAO;
@@ -105,7 +105,13 @@ public class UsersController {
 				responseDTO.setStatus(403);
 				responseDTO.setMessage("Redeemed Already");
 				return responseDTO;
-			} else if (stats.contains("6")) {
+			} else if(user.getIsBanned()) {
+				responseDTO.setStatus(401);
+				httpServletResponse.setStatus(401);
+				responseDTO.setMessage("User has been banned");
+				return responseDTO;
+			}
+			else if (stats.contains("6")) {
 				user.setStats(stats + " | Redeemed");
 				userRepository.save(user);
 				responseDTO.setStatus(200);
@@ -123,18 +129,44 @@ public class UsersController {
 		responseDTO.setMessage("User not found");
 		return responseDTO;
 	}
+	
+	@CrossOrigin({ "http://localhost:9000", "https://cryptic-headland-55422.herokuapp.com" })
+	@GetMapping("/users")
+	public List<UserMetricDTO> getAllUsers() {
+		List<User> usersList = userRepository.findAll();
+		List<UserMetricDTO> userMetricDTOList = new ArrayList<>();
+		for (User user : usersList) {
+			UserMetricDTO userMetricDTO = new UserMetricDTO();
+			BeanUtils.copyProperties(user, userMetricDTO);
+			userMetricDTOList.add(userMetricDTO);
+		}
+		return userMetricDTOList;
+	}
 
 	@CrossOrigin({ "http://localhost:9000", "https://cryptic-headland-55422.herokuapp.com" })
 	@GetMapping("/user/search/{text}")
-	public List<UserResponseDTO> getUsersList(@PathVariable String text) {
+	public List<UserMetricDTO> getUsersList(@PathVariable String text) {
 		List<User> usersList = userDAO.getUserContainingString(text);
-		List<UserResponseDTO> userResponseDTOList = new ArrayList<>();
+		List<UserMetricDTO> userMetricDTOList = new ArrayList<>();
 		for (User user : usersList) {
-			UserResponseDTO userResponseDTO = new UserResponseDTO();
-			BeanUtils.copyProperties(user, userResponseDTO);
-			userResponseDTOList.add(userResponseDTO);
+			UserMetricDTO userMetricDTO = new UserMetricDTO();
+			BeanUtils.copyProperties(user, userMetricDTO);
+			userMetricDTOList.add(userMetricDTO);
 		}
-		return userResponseDTOList;
+		return userMetricDTOList;
+	}
+	
+	@CrossOrigin({ "http://localhost:9000", "https://cryptic-headland-55422.herokuapp.com" })
+	@GetMapping("/banned_users")
+	public List<UserMetricDTO> getBannedUsers(@RequestParam String text) {
+		List<User> usersList = userDAO.getBannedUsersContainingString(text);
+		List<UserMetricDTO> userMetricDTOList = new ArrayList<>();
+		for (User user : usersList) {
+			UserMetricDTO userMetricDTO = new UserMetricDTO();
+			BeanUtils.copyProperties(user, userMetricDTO);
+			userMetricDTOList.add(userMetricDTO);
+		}
+		return userMetricDTOList;
 	}
 
 	@CrossOrigin({ "http://localhost:9000", "https://cryptic-headland-55422.herokuapp.com" })
@@ -216,4 +248,12 @@ public class UsersController {
 		responseDTO.setMessage("User not found");
 		return ResponseEntity.status(404).body(responseDTO);
 	}
+	
+	@CrossOrigin({ "http://localhost:9000", "https://cryptic-headland-55422.herokuapp.com" })
+	@GetMapping("/ban_count")
+	public Long getBannedCount() {
+		Long bannedCount = userRepository.getBannedCount();
+		return bannedCount;
+	}
+	
 }
