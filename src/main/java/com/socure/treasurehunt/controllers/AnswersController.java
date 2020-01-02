@@ -27,11 +27,11 @@ public class AnswersController {
 
 	static {
 		levelVsClueMap = new HashMap<>();
-		levelVsClueMap.put("1", "Clue for 2");
-		levelVsClueMap.put("2", "Clue for 3");
-		levelVsClueMap.put("3", "Clue for 4");
-		levelVsClueMap.put("4", "Clue for 5");
-		levelVsClueMap.put("5", "Clue for 6");
+		levelVsClueMap.put("1", "Our journey in IITM begins here. Interestingly, it ends here as well.");
+		levelVsClueMap.put("2", "The gates might be discriminatory, but the show will be spectacular.");
+		levelVsClueMap.put("3", "The name is misleading. Lectures, workshops, talks, even hangouts, this place has seen it all.");
+		levelVsClueMap.put("4", "All engineers love a cup of coffee. Some non-engineers study right next to one.");
+		levelVsClueMap.put("5", "A lecture can bring together a physicist and a mathematician.");
 		levelVsClueMap.put("6", "Congrats");
 	}
 
@@ -74,14 +74,13 @@ public class AnswersController {
 				dbUser.setLevel(level);
 				String stats = dbUser.getStats();
 				dbUser.setStats(stats.concat(" | Level " + level.toString()));
-				dbUser.setCurrentClue(levelVsClueMap.get(level.toString()));
 				userRepository.save(dbUser);
 				responseDTO.setStatus(200);
 				responseDTO.setMessage(levelVsClueMap.get(level.toString()));
 				return ResponseEntity.ok().body(responseDTO);
 
 			} else {
-				responseDTO.setStatus(406);
+				responseDTO.setStatus(200);
 				responseDTO.setMessage("Wrong Answer");
 				return ResponseEntity.ok().body(responseDTO);
 			}
