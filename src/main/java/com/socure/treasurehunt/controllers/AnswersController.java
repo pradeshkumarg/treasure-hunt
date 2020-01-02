@@ -80,7 +80,7 @@ public class AnswersController {
 				return ResponseEntity.ok().body(responseDTO);
 
 			} else {
-				responseDTO.setStatus(200);
+				responseDTO.setStatus(406);
 				responseDTO.setMessage("Wrong Answer");
 				return ResponseEntity.ok().body(responseDTO);
 			}
