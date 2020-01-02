@@ -57,6 +57,9 @@ public class User {
 	@Column
 	private Boolean isBanned = false;
 	
+	@Column 
+	private String currentClue = "";
+	
 	@JsonIgnore
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Metric> metrics;
@@ -163,5 +166,13 @@ public class User {
 
 	public void setMetrics(List<Metric> metrics) {
 		this.metrics = metrics;
+	}
+
+	public String getCurrentClue() {
+		return currentClue;
+	}
+
+	public void setCurrentClue(String currentClue) {
+		this.currentClue = currentClue;
 	}
 }

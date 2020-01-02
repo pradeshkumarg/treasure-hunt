@@ -74,13 +74,14 @@ public class AnswersController {
 				dbUser.setLevel(level);
 				String stats = dbUser.getStats();
 				dbUser.setStats(stats.concat(" | Level " + level.toString()));
+				dbUser.setCurrentClue(levelVsClueMap.get(level.toString()));
 				userRepository.save(dbUser);
 				responseDTO.setStatus(200);
 				responseDTO.setMessage(levelVsClueMap.get(level.toString()));
 				return ResponseEntity.ok().body(responseDTO);
 
 			} else {
-				responseDTO.setStatus(200);
+				responseDTO.setStatus(406);
 				responseDTO.setMessage("Wrong Answer");
 				return ResponseEntity.ok().body(responseDTO);
 			}
