@@ -1,3 +1,4 @@
+
 package com.socure.treasurehunt.dto;
 
 import org.springframework.stereotype.Component;
@@ -25,7 +26,7 @@ public class UserResponseDTO {
 	
 	private String currentQuestion;
 	
-	private String currentLevel;
+	private String currentClue;
 
 	public Long getId() {
 		return id;
@@ -107,11 +108,11 @@ public class UserResponseDTO {
 		this.currentQuestion = currentQuestion;
 	}
 
-	public String getCurrentLevel() {
-		return currentLevel;
+	public String getCurrentClue() {
+		return currentClue;
 	}
 
-	public void setCurrentLevel(String currentLevel) {
-		this.currentLevel = currentLevel;
+	public void setCurrentClue(String currentClue) {
+		this.currentClue = currentClue;
 	}
 }
