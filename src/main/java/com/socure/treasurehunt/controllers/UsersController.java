@@ -48,6 +48,7 @@ public class UsersController {
 		user.setStats("Registered");
 		user.setLevel(0);
 		user.setCurrentQuestion("");
+		user.setCurrentClue(TreasureHuntConstants.LEVEL_0_CLUE);
 		try {
 			userRepository.save(user);
 			ResponseDTO responseDTO = new ResponseDTO();
